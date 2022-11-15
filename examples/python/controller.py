@@ -78,7 +78,6 @@ class Controller :
             self.move_right()
         else:
             self.stop()
-            pass
 
         # 버튼 클릭할 시 사격
         if self.button1.pressed :
@@ -97,6 +96,7 @@ class Controller :
     
     def stopping(self) :
         # self.move_state = self.move_state.STOPPING
+        return self.game.make_action(self.actions[6])
         pass
     
     def stop(self) :
