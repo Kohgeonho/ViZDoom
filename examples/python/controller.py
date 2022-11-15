@@ -4,12 +4,13 @@ from enum import Enum
 import vizdoom as vzd
 
 class Controller :
-    def __init__(self) -> None:
+    def __init__(self, game) -> None:
         # set modi
         bundle = modi.MODI()
         self.button1 = bundle.buttons[0]
         self.dial1 = bundle.dials[0]
         self.gyro = bundle.gyros[0]
+        self.game = game
         
         # set state
         # self.move_state = self.move_state()
@@ -79,11 +80,11 @@ class Controller :
 
     def move_left(self) :
         self.move_state = self.move_state.MOVE_LEFT
-        return vzd.DoomGame().game.make_action(self.actions[0])
+        return self.game.make_action(self.actions[0])
 
     def move_right(self) : 
         self.move_state = self.move_state.MOVE_RIGHT
-        return vzd.DoomGame().game.make_action(self.actions[1])
+        return self.game.make_action(self.actions[1])
     
     def stopping(self) :
         self.move_state = self.move_state.STOPPING
@@ -109,7 +110,7 @@ class Controller :
 
     # shoot 사격
     def shoot(self) :
-        return vzd.Doomgame().game.make_action(self.actions[2])
+        return self.game.make_action(self.actions[2])
 
     # weapon change 무기 변경
     def weapon_change(self) :

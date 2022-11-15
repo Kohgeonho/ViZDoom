@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # acc_x0 = gyro.acceleration_x
     # move_state = STOP
 
-    controller = Controller()
+    controller = Controller(game)
 
     # Now it's time for configuration!
     # load_config could be used to load configuration instead of doing it here with code.
