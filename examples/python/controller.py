@@ -17,7 +17,16 @@ class Controller :
         self.sight_state = self.sight_state()
         self.sight_state = self.sight_state.SIGHT_DOWN
 
-        self.actions = [[True, False, False], [False, True, False], [False, False, True], [True, True, False], [True, False, True], [False, True, True], [False, False, False], [True, True, True]]
+        self.actions = [
+            [True, False, False],   # Move Left
+            [False, True, False],   # Move Right
+            [False, False, True],   # Shoot
+            [True, True, False], 
+            [True, False, True], 
+            [False, True, True], 
+            [False, False, False],  # Do Nothing
+            [True, True, True]
+        ]
         # 주석 무시해주세요
         # self.r = null
         # self.move_state = Enum("STOP", "MOVE_FORWARD", "MOVE_RIGHT", "MOVE_LEFT",
