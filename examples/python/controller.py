@@ -54,6 +54,8 @@ class Controller :
     def act(self) :
         accx = self.gyro.acceleration_x
 
+        print(self.move_state.STOP)
+
         # 자이로 센서 인식해서 좌우 이동
         if accx < -10:
             if self.move_state == self.move_state.STOP:

@@ -145,6 +145,7 @@ if __name__ == "__main__":
     # Without this everything would go too fast for you to keep track of what's happening.
     sleep_time = 1.0 / vzd.DEFAULT_TICRATE  # = 0.028
 
+    controller.initial_ready()
     for i in range(episodes):
         print("Episode #" + str(i + 1))
 
