@@ -57,18 +57,26 @@ class Controller :
         # 자이로 센서 인식해서 좌우 이동
         if accx < -10:
             if self.move_state == self.move_state.STOP:
-                self.move_left()
+                self.move_state = self.move_state.MOVE_LEFT
             elif self.move_state == self.move_state.MOVE_LEFT:
-                self.stopping()
+                self.move_state = self.move_state.STOPPING
         elif accx > 10:
             if self.move_state == self.move_state.STOP:
-                self.move_left()
+                self.move_state = self.move_state.MOVE_RIGHT
             elif self.move_state == self.move_state.MOVE_RIGHT:
-                self.stopping()
+                self.move_state -= self.move_state.STOPPING
         else:
             if self.move_state == self.move_state.STOPPING:
-                self.stop()
+                self.move_state = self.move_state.STOP
         
+        # Move Actions
+        if self.move_state == self.move_state.MOVE_LEFT:
+            self.move_left()
+        elif self.move_state == self.move_state.MOVE_RIGHT:
+            self.move_right()
+        else:
+            pass
+
         # 버튼 클릭할 시 사격
         if self.button1.pressed :
             self.shoot()
