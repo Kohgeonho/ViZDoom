@@ -54,19 +54,19 @@ class Controller :
     def act(self) :
         accx = self.gyro.acceleration_x
 
-        print(self.move_state.STOP)
+        print(self.move_state)
 
         # 자이로 센서 인식해서 좌우 이동
-        if accx < -10:
+        if accx < -5:
             if self.move_state == self.move_state.STOP:
                 self.move_state = self.move_state.MOVE_LEFT
-            elif self.move_state == self.move_state.MOVE_LEFT:
+            elif self.move_state == self.move_state.MOVE_RIGHT:
                 self.move_state = self.move_state.STOPPING
-        elif accx > 10:
+        elif accx > 5:
             if self.move_state == self.move_state.STOP:
                 self.move_state = self.move_state.MOVE_RIGHT
-            elif self.move_state == self.move_state.MOVE_RIGHT:
-                self.move_state -= self.move_state.STOPPING
+            elif self.move_state == self.move_state.MOVE_LEFT:
+                self.move_state = self.move_state.STOPPING
         else:
             if self.move_state == self.move_state.STOPPING:
                 self.move_state = self.move_state.STOP
@@ -76,8 +76,10 @@ class Controller :
             self.move_left()
         elif self.move_state == self.move_state.MOVE_RIGHT:
             self.move_right()
-        else:
+        elif self.move_state == self.move_state.STOP:
             self.stop()
+        else:
+            self.stopping()
 
         # 버튼 클릭할 시 사격
         if self.button1.pressed :
@@ -97,7 +99,7 @@ class Controller :
     def stopping(self) :
         # self.move_state = self.move_state.STOPPING
         return self.game.make_action(self.actions[6])
-        pass
+        
     
     def stop(self) :
         # self.move_state = self.move_state.STOP
