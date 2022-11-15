@@ -16,6 +16,7 @@ import os
 from random import choice
 from time import sleep
 import vizdoom as vzd
+from controller import Controller
 
 STOP = 0
 STOPPING = 1
@@ -26,18 +27,20 @@ if __name__ == "__main__":
     # Create DoomGame instance. It will run the game and communicate with you.
     game = vzd.DoomGame()
 
-    bundle = modi.MODI()
-    button1 = bundle.buttons[0]
-    dial1 = bundle.dials[0]
-    gyro = bundle.gyros[0]
+    # bundle = modi.MODI()
+    # button1 = bundle.buttons[0]
+    # dial1 = bundle.dials[0]
+    # gyro = bundle.gyros[0]
 
     ## Initial Settings of Accelerator
 
-    while gyro.acceleration_x == 0 or gyro.acceleration_y == 0 or gyro.acceleration_z == 0:
-        sleep(0.1)
+    # while gyro.acceleration_x == 0 or gyro.acceleration_y == 0 or gyro.acceleration_z == 0:
+    #     sleep(0.1)
 
-    acc_x0 = gyro.acceleration_x
-    move_state = STOP
+    # acc_x0 = gyro.acceleration_x
+    # move_state = STOP
+
+    controller = Controller()
 
     # Now it's time for configuration!
     # load_config could be used to load configuration instead of doing it here with code.
@@ -133,7 +136,7 @@ if __name__ == "__main__":
     # MOVE_LEFT, MOVE_RIGHT, ATTACK
     # game.get_available_buttons_size() can be used to check the number of available buttons.
     # 5 more combinations are naturally possible but only 3 are included for transparency when watching.
-    actions = [[True, False, False], [False, True, False], [False, False, True], [True, True, False], [True, False, True], [False, True, True], [False, False, False], [True, True, True]]
+    # actions = [[True, False, False], [False, True, False], [False, False, True], [True, True, False], [True, False, True], [False, True, True], [False, False, False], [True, True, True]]
 
     # Run this many episodes
     episodes = 10
@@ -164,21 +167,23 @@ if __name__ == "__main__":
             objects = state.objects
             sectors = state.sectors
 
-            accx = gyro.acceleration_x
+            # accx = gyro.acceleration_x
 
-            if accx < -10:
-                if move_state == STOP:
-                    move_state = MOVE_RIGHT
-                elif move_state == MOVE_LEFT:
-                    move_state = STOPPING
-            elif accx > 10:
-                if move_state == STOP:
-                    move_state = MOVE_LEFT
-                elif move_state == MOVE_RIGHT:
-                    move_state = STOPPING
-            else:
-                if move_state == STOPPING:
-                    move_state = STOP
+            # if accx < -10:
+            #     if move_state == STOP:
+            #         move_state = MOVE_RIGHT
+            #     elif move_state == MOVE_LEFT:
+            #         move_state = STOPPING
+            # elif accx > 10:
+            #     if move_state == STOP:
+            #         move_state = MOVE_LEFT
+            #     elif move_state == MOVE_RIGHT:
+            #         move_state = STOPPING
+            # else:
+            #     if move_state == STOPPING:
+            #         move_state = STOP
+
+            r = controller.act()
 
             # Games variables can be also accessed via
             # (including the ones that were not added as available to a game state):
@@ -190,15 +195,15 @@ if __name__ == "__main__":
             #     r = game.make_action(actions[0])
             # if key == "s":
             #     r = game.make_action(actions[1])
-            print(gyro.acceleration_x, move_state)
-            if button1.pressed == True:
-                r = game.make_action(actions[2])
-            if move_state == MOVE_LEFT: #dial1.degree < 40:
-                r = game.make_action(actions[0])
-            if move_state == MOVE_RIGHT: #dial1.degree > 60:
-                r = game.make_action(actions[1])
-            else:
-                r = game.make_action(actions[6])
+            # print(gyro.acceleration_x, move_state)
+            # if button1.pressed == True:
+            #     r = game.make_action(actions[2])
+            # if move_state == MOVE_LEFT: #dial1.degree < 40:
+            #     r = game.make_action(actions[0])
+            # if move_state == MOVE_RIGHT: #dial1.degree > 60:
+            #     r = game.make_action(actions[1])
+            # else:
+            #     r = game.make_action(actions[6])
 
                 
 

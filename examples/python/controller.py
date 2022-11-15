@@ -12,9 +12,9 @@ class Controller :
         self.gyro = bundle.gyros[0]
         
         # set state
-        self.move_state = self.move_state()
+        # self.move_state = self.move_state()
         self.move_state = self.move_state.STOP
-        self.sight_state = self.sight_state()
+        # self.sight_state = self.sight_state()
         self.sight_state = self.sight_state.SIGHT_DOWN
 
         self.actions = [
