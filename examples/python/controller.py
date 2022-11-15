@@ -77,6 +77,7 @@ class Controller :
         elif self.move_state == self.move_state.MOVE_RIGHT:
             self.move_right()
         else:
+            self.stop()
             pass
 
         # 버튼 클릭할 시 사격
@@ -85,22 +86,22 @@ class Controller :
         
     # move 이동
     def move_forward(self) :
-        self.move_state = self.move_state.MOVE_FORWARD
+        # self.move_state = self.move_state.MOVE_FORWARD
         pass
 
     def move_left(self) :
-        self.move_state = self.move_state.MOVE_LEFT
         return self.game.make_action(self.actions[0])
 
     def move_right(self) : 
-        self.move_state = self.move_state.MOVE_RIGHT
         return self.game.make_action(self.actions[1])
     
     def stopping(self) :
-        self.move_state = self.move_state.STOPPING
+        # self.move_state = self.move_state.STOPPING
+        pass
     
     def stop(self) :
-        self.move_state = self.move_state.STOP
+        # self.move_state = self.move_state.STOP
+        return self.game.make_action(self.actions[6])
     
     # turn 방향 전환 
     def turn_left(self) :
