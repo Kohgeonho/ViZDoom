@@ -1,6 +1,7 @@
 import modi
 from time import sleep
 from enum import Enum
+import numpy as np
 import vizdoom as vzd
 
 class Controller :
@@ -8,8 +9,8 @@ class Controller :
         # set modi
         bundle = modi.MODI()
         self.button1 = bundle.buttons[0]
-        self.dial1 = bundle.dials[0]
-        self.gyro = bundle.gyros[0]
+        # self.dial1 = bundle.dials[0]
+        # self.gyro = bundle.gyros[0]
         self.game = game
         
         # set state
@@ -18,16 +19,22 @@ class Controller :
         # self.sight_state = self.sight_state()
         self.sight_state = self.sight_state.SIGHT_DOWN
 
-        self.actions = [
-            [True, False, False],   # Move Left
-            [False, True, False],   # Move Right
-            [False, False, True],   # Shoot
-            [True, True, False], 
-            [True, False, True], 
-            [False, True, True], 
-            [False, False, False],  # Do Nothing
-            [True, True, True]
-        ]
+        actions = game.get_available_actions
+        num_actions = len(actions)
+        self.actions = np.array([
+            np.array([i for i in np.binary_repr(n, width=num_actions)]).astype(np.bool)
+            for n in range(2 ** num_actions)
+        ])
+        # self.actions = [
+        #     [True, False, False],   # Move Left
+        #     [False, True, False],   # Move Right
+        #     [False, False, True],   # Shoot
+        #     [True, True, False], 
+        #     [True, False, True], 
+        #     [False, True, True], 
+        #     [False, False, False],  # Do Nothing
+        #     [True, True, True]
+        # ]
         # 주석 무시해주세요
         # self.r = null
         # self.move_state = Enum("STOP", "MOVE_FORWARD", "MOVE_RIGHT", "MOVE_LEFT",
@@ -36,9 +43,9 @@ class Controller :
 
     class move_state(Enum) :
         STOP = 0
-        MOVE_FORWARD = 1
+        MOVE_LEFT = 1
         MOVE_RIGHT = 2 
-        MOVE_LEFT = 3
+        MOVE_FORWARD = 3
         STOPPING = 4
 
     class sight_state(Enum) :
@@ -91,19 +98,19 @@ class Controller :
         pass
 
     def move_left(self) :
-        return self.game.make_action(self.actions[0])
+        return self.game.make_action(self.actions[1])
 
     def move_right(self) : 
-        return self.game.make_action(self.actions[1])
+        return self.game.make_action(self.actions[2])
     
     def stopping(self) :
         # self.move_state = self.move_state.STOPPING
-        return self.game.make_action(self.actions[6])
+        return self.game.make_action(self.actions[0])
         
     
     def stop(self) :
         # self.move_state = self.move_state.STOP
-        return self.game.make_action(self.actions[6])
+        return self.game.make_action(self.actions[0])
     
     # turn 방향 전환 
     def turn_left(self) :
@@ -123,7 +130,7 @@ class Controller :
 
     # shoot 사격
     def shoot(self) :
-        return self.game.make_action(self.actions[2])
+        return self.game.make_action(self.actions[4])
 
     # weapon change 무기 변경
     def weapon_change(self) :

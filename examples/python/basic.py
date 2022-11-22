@@ -94,7 +94,11 @@ if __name__ == "__main__":
     # game.add_available_button(vzd.Button.MOVE_RIGHT)
     # game.add_available_button(vzd.Button.ATTACK)
     # Or by setting them all at once:
-    game.set_available_buttons([vzd.Button.MOVE_LEFT, vzd.Button.MOVE_RIGHT, vzd.Button.ATTACK])
+    game.set_available_buttons([
+        vzd.Button.MOVE_LEFT, 
+        vzd.Button.MOVE_RIGHT, 
+        vzd.Button.ATTACK
+    ])
     # Buttons that will be used can be also checked by:
     print("Available buttons:", [b.name for b in game.get_available_buttons()])
 
@@ -168,69 +172,7 @@ if __name__ == "__main__":
             objects = state.objects
             sectors = state.sectors
 
-            # accx = gyro.acceleration_x
-
-            # if accx < -10:
-            #     if move_state == STOP:
-            #         move_state = MOVE_RIGHT
-            #     elif move_state == MOVE_LEFT:
-            #         move_state = STOPPING
-            # elif accx > 10:
-            #     if move_state == STOP:
-            #         move_state = MOVE_LEFT
-            #     elif move_state == MOVE_RIGHT:
-            #         move_state = STOPPING
-            # else:
-            #     if move_state == STOPPING:
-            #         move_state = STOP
-
             r = controller.act()
-
-            # Games variables can be also accessed via
-            # (including the ones that were not added as available to a game state):
-            #game.get_game_variable(GameVariable.AMMO2)
-
-            # Makes an action (here random one) and returns a reward.
-            # key = input()
-            # if key == "a":
-            #     r = game.make_action(actions[0])
-            # if key == "s":
-            #     r = game.make_action(actions[1])
-            # print(gyro.acceleration_x, move_state)
-            # if button1.pressed == True:
-            #     r = game.make_action(actions[2])
-            # if move_state == MOVE_LEFT: #dial1.degree < 40:
-            #     r = game.make_action(actions[0])
-            # if move_state == MOVE_RIGHT: #dial1.degree > 60:
-            #     r = game.make_action(actions[1])
-            # else:
-            #     r = game.make_action(actions[6])
-
-                
-
-            # if key == "f":
-            #     r = game.make_action(actions[3])
-            # if key == "g":
-            #     r = game.make_action(actions[4])
-            # if key == "h":
-            #     r = game.make_action(actions[5])
-            # if key == "j":
-            #     r = game.make_action(actions[6])
-            # if key == "k":
-            #     r = game.make_action(actions[7])
-
-            # r = game.make_action(actions[0])
-
-
-
-            # Makes a "prolonged" action and skip frames:
-            # skiprate = 4
-            # r = game.make_action(choice(actions), skiprate)
-
-            # The same could be achieved with:
-            # game.set_action(choice(actions))
-            # game.advance_action(skiprate)
-            # r = game.get_last_reward()
 
             # Prints state's game variables and reward.
             print("State #" + str(n))
