@@ -94,8 +94,8 @@ if __name__ == "__main__":
     # game.add_available_button(vzd.Button.ATTACK)
     # Or by setting them all at once:
     game.set_available_buttons([
-        vzd.Button.MOVE_LEFT, 
-        vzd.Button.MOVE_RIGHT, 
+        vzd.Button.TURN_LEFT, 
+        vzd.Button.TURN_RIGHT, 
         vzd.Button.MOVE_FORWARD,
         vzd.Button.MOVE_BACKWARD,
         vzd.Button.ATTACK,
