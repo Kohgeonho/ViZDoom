@@ -27,20 +27,6 @@ if __name__ == "__main__":
     # Create DoomGame instance. It will run the game and communicate with you.
     game = vzd.DoomGame()
 
-    # bundle = modi.MODI()
-    # button1 = bundle.buttons[0]
-    # dial1 = bundle.dials[0]
-    # gyro = bundle.gyros[0]
-
-    ## Initial Settings of Accelerator
-
-    # while gyro.acceleration_x == 0 or gyro.acceleration_y == 0 or gyro.acceleration_z == 0:
-    #     sleep(0.1)
-
-    # acc_x0 = gyro.acceleration_x
-    # move_state = STOP
-
-
     # Now it's time for configuration!
     # load_config could be used to load configuration instead of doing it here with code.
     # If load_config is used in-code configuration will also work - most recent changes will add to previous ones.

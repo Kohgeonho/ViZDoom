@@ -14,11 +14,9 @@ class Controller :
         self.ir1 = bundle.irs[0]
         self.game = game
         
-        # set state
-        # self.move_state = self.move_state()
+
+        self.turn_state = self.turn_state.STOP
         self.move_state = self.move_state.STOP
-        self.move_state2 = self.move_state2.STOP
-        # self.sight_state = self.sight_state()
         self.sight_state = self.sight_state.SIGHT_DOWN
 
         actions = game.get_available_buttons()
@@ -28,11 +26,6 @@ class Controller :
             np.array([i for i in np.binary_repr(n, width=num_actions)]).astype(np.bool)[::-1]
             for n in range(2 ** num_actions)
         ])
-        # 주석 무시해주세요
-        # self.r = null
-        # self.move_state = Enum("STOP", "MOVE_FORWARD", "MOVE_RIGHT", "MOVE_LEFT",
-        #     "TURN_RIGHT", "TURN_LEFT", "SIGHT_UP", "SIGHT_DOWN", "SHOOT", "WEAPON_CHANGE")
-        # self.move_state = "STOP"
 
     class turn_state(Enum) :
         STOP = 0
@@ -60,24 +53,25 @@ class Controller :
         yaw = self.gyro.yaw + 2
         roll = self.gyro.roll
 
+        print(yaw)
         print(self.turn_state)
         print(self.move_state)
 
-        # 자이로 센서 인식해서 좌우 이동
+        # 자이로 센서 인식해서 좌우 턴
         if yaw > 15:
             if self.turn_state == self.turn_state.STOP:
-                self.turn_state = self.turn_state.MOVE_LEFT
-            elif self.turn_state == self.turn_state.MOVE_RIGHT:
+                self.turn_state = self.turn_state.TURN_LEFT
+            elif self.turn_state == self.turn_state.TURN_RIGHT:
                 self.turn_state = self.turn_state.STOPPING
         elif yaw < -15:
             if self.turn_state == self.turn_state.STOP:
-                self.turn_state = self.turn_state.MOVE_RIGHT
-            elif self.turn_state == self.turn_state.MOVE_LEFT:
+                self.turn_state = self.turn_state.TURN_RIGHT
+            elif self.turn_state == self.turn_state.TURN_LEFT:
                 self.turn_state = self.turn_state.STOPPING
         else:
-            if self.turn_state == self.turn_state.MOVE_LEFT:
+            if self.turn_state == self.turn_state.TURN_LEFT:
                 self.turn_state = self.turn_state.STOPPING
-            if self.turn_state == self.turn_state.MOVE_RIGHT:
+            if self.turn_state == self.turn_state.TURN_RIGHT:
                 self.turn_state = self.turn_state.STOPPING
             if self.turn_state == self.turn_state.STOPPING:
                 self.turn_state = self.turn_state.STOP
@@ -106,40 +100,26 @@ class Controller :
 
         # Turn Actions
 
-        if self.turn_state == self.turn_state.MOVE_LEFT:
-            # self.move_left()
+        if self.turn_state == self.turn_state.TURN_LEFT:
             k += 1
-        elif self.turn_state == self.turn_state.MOVE_RIGHT:
-            # self.move_right()
+        elif self.turn_state == self.turn_state.TURN_RIGHT:
             k += 2
-        # elif self.move_state == self.move_state.STOP:
-            # self.stop()
-        # else:
-            # self.stopping()
 
 
         # Move Actions
 
         if self.move_state == self.move_state.MOVE_FORWARD:
-            # self.move_forward()
             k += 4
         elif self.move_state == self.move_state.MOVE_BACKWARD:
-            # self.move_backward()
-            k += 8
-        # elif self.move_state2 == self.move_state2.STOP:
-            # self.stop()
-        # else:
-            # self.stopping()        
+            k += 8       
 
 
         # 버튼 클릭할 시 사격
         if self.button1.pressed :
-            # self.attack()
             k += 16
 
         # ir 센서 인식 시 무기 전환
         if self.ir1.proximity > 50 :
-            # self.select_next_weapon()
             k += 32
 
         if self.dial1.degree < 45 :
@@ -148,36 +128,4 @@ class Controller :
             k += 128
         
         return self.game.make_action(self.actions[k])
-        # return self.gyro.acceleration_x
-
-
-   
-    # def stop(self) :
-    #     # self.move_state = self.move_state.STOP
-    #     return self.game.make_action(self.actions[0])
-
-    # def stopping(self) :
-    #     # self.move_state = self.move_state.STOPPING
-    #     return self.game.make_action(self.actions[0])
-
-    # def move_left(self) :
-    #     return self.game.make_action(self.actions[1])
-
-    # def move_right(self) : 
-    #     return self.game.make_action(self.actions[2])
-    
-    # def move_forward(self) :
-    #     return self.game.make_action(self.actions[4])
-
-    # def move_backward(self) : 
-    #     return self.game.make_action(self.actions[8])
-    
-    # # shoot 사격
-    # def attack(self) :
-    #     return self.game.make_action(self.actions[16])
-
-    # def select_next_weapon(self) :
-    #     return self.game.make_action(self.actions[32])
-    
-        
 
