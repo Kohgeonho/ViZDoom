@@ -40,7 +40,6 @@ if __name__ == "__main__":
     # acc_x0 = gyro.acceleration_x
     # move_state = STOP
 
-    controller = Controller(game)
 
     # Now it's time for configuration!
     # load_config could be used to load configuration instead of doing it here with code.
@@ -97,7 +96,10 @@ if __name__ == "__main__":
     game.set_available_buttons([
         vzd.Button.MOVE_LEFT, 
         vzd.Button.MOVE_RIGHT, 
-        vzd.Button.ATTACK
+        vzd.Button.MOVE_FORWARD,
+        vzd.Button.MOVE_BACKWARD,
+        vzd.Button.ATTACK,
+        vzd.Button.SELECT_NEXT_WEAPON
     ])
     # Buttons that will be used can be also checked by:
     print("Available buttons:", [b.name for b in game.get_available_buttons()])
@@ -135,7 +137,7 @@ if __name__ == "__main__":
 
     # Initialize the game. Further configuration won't take any effect from now on.
     game.init()
-
+    controller = Controller(game)
     # Define some actions. Each list entry corresponds to declared buttons:
     # MOVE_LEFT, MOVE_RIGHT, ATTACK
     # game.get_available_buttons_size() can be used to check the number of available buttons.
@@ -177,7 +179,7 @@ if __name__ == "__main__":
             # Prints state's game variables and reward.
             print("State #" + str(n))
             print("Game variables:", vars)
-            print("Reward:", r)
+            print("Acc:", r)
             print("=====================")
 
             if sleep_time > 0:
