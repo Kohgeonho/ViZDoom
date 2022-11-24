@@ -11,11 +11,13 @@ class Controller :
         self.button1 = bundle.buttons[0]
         self.dial1 = bundle.dials[0]
         self.gyro = bundle.gyros[0]
+        self.ir1 = bundle.irs[0]
         self.game = game
         
         # set state
         # self.move_state = self.move_state()
         self.move_state = self.move_state.STOP
+        self.move_state2 = self.move_state2.STOP
         # self.sight_state = self.sight_state()
         self.sight_state = self.sight_state.SIGHT_DOWN
 
@@ -58,15 +60,16 @@ class Controller :
         yaw = self.gyro.yaw
         roll = self.gyro.roll
 
-        print(self.move_state, self.move_state2)
+        print(self.move_state)
+        print(self.move_state2)
 
         # 자이로 센서 인식해서 좌우 이동
-        if yaw > 30:
+        if yaw > 15:
             if self.move_state == self.move_state.STOP:
                 self.move_state = self.move_state.MOVE_LEFT
             elif self.move_state == self.move_state.MOVE_RIGHT:
                 self.move_state = self.move_state.STOPPING
-        elif yaw < -30:
+        elif yaw < -15:
             if self.move_state == self.move_state.STOP:
                 self.move_state = self.move_state.MOVE_RIGHT
             elif self.move_state == self.move_state.MOVE_LEFT:
@@ -80,12 +83,12 @@ class Controller :
                 self.move_state = self.move_state.STOP
         
         # 자이로 센서 인식해서 앞뒤 이동
-        if roll < -30:
+        if roll < -15:
             if self.move_state2 == self.move_state2.STOP:
                 self.move_state2 = self.move_state2.MOVE_FORWARD
             elif self.move_state2 == self.move_state2.MOVE_BACKWARD:
                 self.move_state2 = self.move_state2.STOPPING
-        elif roll > 30:
+        elif roll > 15:
             if self.move_state2 == self.move_state2.STOP:
                 self.move_state2 = self.move_state2.MOVE_BACKWARD
             elif self.move_state2 == self.move_state2.MOVE_FORWARD:
@@ -98,65 +101,81 @@ class Controller :
             if self.move_state2 == self.move_state2.STOPPING:
                 self.move_state2 = self.move_state2.STOP
 
+        k = 0
 
         # Move Actions
 
         if self.move_state2 == self.move_state2.MOVE_FORWARD:
-            self.move_forward()
+            # self.move_forward()
+            k += 4
         elif self.move_state2 == self.move_state2.MOVE_BACKWARD:
-            self.move_backward()
-        elif self.move_state2 == self.move_state2.STOP:
-            self.stop()
-        else:
-            self.stopping()
+            # self.move_backward()
+            k += 8
+        # elif self.move_state2 == self.move_state2.STOP:
+            # self.stop()
+        # else:
+            # self.stopping()
 
 
         if self.move_state == self.move_state.MOVE_LEFT:
-            self.move_left()
+            # self.move_left()
+            k += 1
         elif self.move_state == self.move_state.MOVE_RIGHT:
-            self.move_right()
-        elif self.move_state == self.move_state.STOP:
-            self.stop()
-        else:
-            self.stopping()
+            # self.move_right()
+            k += 2
+        # elif self.move_state == self.move_state.STOP:
+            # self.stop()
+        # else:
+            # self.stopping()
 
         
 
         # 버튼 클릭할 시 사격
         if self.button1.pressed :
-            self.attack()
+            # self.attack()
+            k += 16
 
-        return self.gyro.acceleration_x
+        # ir 센서 인식 시 무기 전환
+        if self.ir1.proximity > 50 :
+            # self.select_next_weapon()
+            k += 32
 
+        if self.dial1.degree < 40 :
+            k += 64
+        elif self.dial1.degree > 60 :
+            k += 128
         
-        
+        return self.game.make_action(self.actions[k])
+        # return self.gyro.acceleration_x
 
-    def stop(self) :
-        # self.move_state = self.move_state.STOP
-        return self.game.make_action(self.actions[0])
 
-    def stopping(self) :
-        # self.move_state = self.move_state.STOPPING
-        return self.game.make_action(self.actions[0])
+   
+    # def stop(self) :
+    #     # self.move_state = self.move_state.STOP
+    #     return self.game.make_action(self.actions[0])
 
-    def move_left(self) :
-        return self.game.make_action(self.actions[1])
+    # def stopping(self) :
+    #     # self.move_state = self.move_state.STOPPING
+    #     return self.game.make_action(self.actions[0])
 
-    def move_right(self) : 
-        return self.game.make_action(self.actions[2])
+    # def move_left(self) :
+    #     return self.game.make_action(self.actions[1])
+
+    # def move_right(self) : 
+    #     return self.game.make_action(self.actions[2])
     
-    def move_forward(self) :
-        return self.game.make_action(self.actions[4])
+    # def move_forward(self) :
+    #     return self.game.make_action(self.actions[4])
 
-    def move_backward(self) : 
-        return self.game.make_action(self.actions[8])
+    # def move_backward(self) : 
+    #     return self.game.make_action(self.actions[8])
     
-    # shoot 사격
-    def attack(self) :
-        return self.game.make_action(self.actions[16])
+    # # shoot 사격
+    # def attack(self) :
+    #     return self.game.make_action(self.actions[16])
 
-    def select_next_weapon(self) :
-        return self.game.make_action(self.actions[32])
+    # def select_next_weapon(self) :
+    #     return self.game.make_action(self.actions[32])
     
         
     

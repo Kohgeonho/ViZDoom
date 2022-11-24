@@ -99,7 +99,9 @@ if __name__ == "__main__":
         vzd.Button.MOVE_FORWARD,
         vzd.Button.MOVE_BACKWARD,
         vzd.Button.ATTACK,
-        vzd.Button.SELECT_NEXT_WEAPON
+        vzd.Button.SELECT_NEXT_WEAPON,
+        vzd.Button.LOOK_UP,
+        vzd.Button.LOOK_DOWN
     ])
     # Buttons that will be used can be also checked by:
     print("Available buttons:", [b.name for b in game.get_available_buttons()])
